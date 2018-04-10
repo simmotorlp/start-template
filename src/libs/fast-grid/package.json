@@ -1,0 +1,87 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "fast-grid",
+        "scope": null,
+        "escapedName": "fast-grid",
+        "name": "fast-grid",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "D:\\MyWork\\gofrobox\\optimizedhtml-start-template"
+    ]
+  ],
+  "_from": "fast-grid@latest",
+  "_id": "fast-grid@0.2.3",
+  "_inCache": true,
+  "_location": "/fast-grid",
+  "_nodeVersion": "8.4.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/fast-grid-0.2.3.tgz_1509182110473_0.009738159365952015"
+  },
+  "_npmUser": {
+    "name": "paulzi",
+    "email": "pavel.zimakoff@gmail.com"
+  },
+  "_npmVersion": "5.3.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "fast-grid",
+    "scope": null,
+    "escapedName": "fast-grid",
+    "name": "fast-grid",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/fast-grid/-/fast-grid-0.2.3.tgz",
+  "_shasum": "f37ea8fa75bca1e6714d471b57fe7a608afcbc34",
+  "_shrinkwrap": null,
+  "_spec": "fast-grid",
+  "_where": "D:\\MyWork\\gofrobox\\optimizedhtml-start-template",
+  "authors": [
+    {
+      "name": "PaulZi",
+      "email": "pavel.zimakoff@gmail.com"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/paulzi/fast-grid/issues"
+  },
+  "dependencies": {},
+  "description": "Sass grid system designed for speed",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-sass": "^2.0.0"
+  },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-zui3/6jVK68XS3Akny4A5P6s4OthwRkcN4QVOiTtNyE3DqyJEzVRLutnKY4V5/o0SVJbmHX/MUUw7guTsiUUBA==",
+    "shasum": "f37ea8fa75bca1e6714d471b57fe7a608afcbc34",
+    "tarball": "https://registry.npmjs.org/fast-grid/-/fast-grid-0.2.3.tgz"
+  },
+  "gitHead": "2e1c35cdccc87ddd9bc80dcc10bbd6063b857633",
+  "homepage": "https://github.com/paulzi/fast-grid#readme",
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "paulzi",
+      "email": "pavel.zimakoff@gmail.com"
+    }
+  ],
+  "name": "fast-grid",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulzi/fast-grid.git"
+  },
+  "version": "0.2.3"
+}
