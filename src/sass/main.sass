@@ -1,7 +1,8 @@
 @import "vars"
 @import "fonts"
-@import "partials/fast-grid/fast-grid"
-@import "partials/normalize.css"
+@import "smart-grid"
+
++reset
 
 ::placeholder
   color: #666
@@ -41,7 +42,7 @@ b, strong
   font-weight: bold
 
 .container
-  @include grid-container(xs sm md lg xl)
+  +wrapper
 
 
 

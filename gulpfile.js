@@ -1,20 +1,21 @@
 'use strict';
 
-var gulp          = require('gulp'),
-		gutil         = require('gulp-util' ),
-		sass          = require('gulp-sass'),
-		browsersync   = require('browser-sync'),
-		concat        = require('gulp-concat'),
-		uglify        = require('gulp-uglify'),
-		cleancss      = require('gulp-clean-css'),
-    		rigger 	      = require('gulp-rigger'),
-		rename        = require('gulp-rename'),
-		autoprefixer  = require('gulp-autoprefixer'),
-		imagemin      = require('gulp-imagemin'),
-		pngquant      = require('imagemin-pngquant'),
-		rimraf        = require('rimraf'),
-		notify        = require("gulp-notify"),
-		rsync         = require('gulp-rsync');
+var gulp = require('gulp'),
+    gutil = require('gulp-util'),
+    sass = require('gulp-sass'),
+    browsersync = require('browser-sync'),
+    concat = require('gulp-concat'),
+    uglify = require('gulp-uglify'),
+    cleancss = require('gulp-clean-css'),
+    rigger = require('gulp-rigger'),
+    rename = require('gulp-rename'),
+    autoprefixer = require('gulp-autoprefixer'),
+    imagemin = require('gulp-imagemin'),
+    pngquant = require('imagemin-pngquant'),
+    rimraf = require('rimraf'),
+    notify = require("gulp-notify"),
+    rsync = require('gulp-rsync'),
+    group = require('gulp-group-css-media-queries');
 
 var path = {
     build: { //Тут мы укажем куда складывать готовые после сборки файлы
@@ -45,35 +46,36 @@ var config = {
     server: {
         baseDir: "./build"
     },
-    tunnel: true,
+    tunnel: false,
     host: 'localhost',
     port: 9000,
-    logPrefix: "Frontend_Devil"
+    logPrefix: "SymonovS"
 };
 
 gulp.task('html', function () {
     gulp.src(path.src.html) //Выберем файлы по нужному пути
         .pipe(rigger()) //Прогоним через rigger
         .pipe(gulp.dest(path.build.html)) //Выплюнем их в папку build
-        .pipe(browsersync.reload( {stream: true} )) //И перезагрузим наш сервер для обновлений
+        .pipe(browsersync.reload({stream: true})) //И перезагрузим наш сервер для обновлений
 });
 
-gulp.task('styles', function() {
-	return gulp.src(path.src.style)
-	.pipe(sass({ outputStyle: 'expand' }).on("error", notify.onError()))
-	.pipe(rename('style.css'))
-	.pipe(autoprefixer(['last 15 versions']))
-	.pipe(cleancss( {level: { 0: { specialComments: 0 } } })) // Opt., comment out when debugging
-	.pipe(gulp.dest(path.build.css))
-	.pipe(browsersync.reload( {stream: true} ))
+gulp.task('styles', function () {
+    return gulp.src(path.src.style)
+        .pipe(sass({outputStyle: 'expand'}).on("error", notify.onError()))
+        .pipe(group())
+        .pipe(rename('style.css'))
+        .pipe(autoprefixer(['last 15 versions']))
+        .pipe(cleancss({level: {0: {specialComments: 0}}})) // Opt., comment out when debugging
+        .pipe(gulp.dest(path.build.css))
+        .pipe(browsersync.reload({stream: true}))
 });
 
-gulp.task('js', function() {
-	return gulp.src(path.src.js)
-	.pipe(rigger()) //Прогоним через rigger
-	// .pipe(uglify()) // Mifify js (opt.)
-	.pipe(gulp.dest(path.build.js))
-	.pipe(browsersync.reload({ stream: true }))
+gulp.task('js', function () {
+    return gulp.src(path.src.js)
+        .pipe(rigger()) //Прогоним через rigger
+        // .pipe(uglify()) // Mifify js (opt.)
+        .pipe(gulp.dest(path.build.js))
+        .pipe(browsersync.reload({stream: true}))
 });
 
 gulp.task('image', function () {
@@ -85,32 +87,32 @@ gulp.task('image', function () {
             interlaced: true
         }))
         .pipe(gulp.dest(path.build.img)) //И бросим в build
-        .pipe(browsersync.reload({ stream: true }))
+        .pipe(browsersync.reload({stream: true}))
 });
 
-gulp.task('fonts', function() {
+gulp.task('fonts', function () {
     gulp.src(path.src.fonts)
         .pipe(gulp.dest(path.build.fonts))
 });
 
-gulp.task('rsync', function() {
-	return gulp.src('src/**')
-	.pipe(rsync({
-		root: 'src/',
-		hostname: 'username@yousite.com',
-		destination: 'yousite/public_html/',
-		// include: ['*.htaccess'], // Includes files to deploy
-		exclude: ['**/Thumbs.db', '**/*.DS_Store'], // Excludes files from deploy
-		recursive: true,
-		archive: true,
-		silent: false,
-		compress: true
-	}))
+gulp.task('rsync', function () {
+    return gulp.src('src/**')
+        .pipe(rsync({
+            root: 'src/',
+            hostname: 'username@yousite.com',
+            destination: 'yousite/public_html/',
+            // include: ['*.htaccess'], // Includes files to deploy
+            exclude: ['**/Thumbs.db', '**/*.DS_Store'], // Excludes files from deploy
+            recursive: true,
+            archive: true,
+            silent: false,
+            compress: true
+        }))
 });
 
 gulp.task('build', ['html', 'js', 'styles', 'fonts', 'image']);
 
-gulp.task('watch', function(){
+gulp.task('watch', function () {
     gulp.watch([path.watch.html], ['html']);
     gulp.watch([path.watch.js], ['js']);
     gulp.watch([path.watch.style], ['styles']);
