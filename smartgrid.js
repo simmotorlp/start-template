@@ -5,7 +5,7 @@ var settings = {
     filename: '_smart-grid',
     outputStyle: 'sass', /* less || scss || sass || styl */
     columns: 12, /* number of grid columns */
-    offset: '15px', /* gutter width px || % || rem */
+    offset: '30px', /* gutter width px || % || rem */
     mobileFirst: false, /* mobileFirst ? 'min-width' : 'max-width' */
     container: {
         maxWidth: '1170px', /* max-width оn very large screen */
