@@ -1,8 +1,7 @@
 @import "vars"
 @import "fonts"
-@import "smart-grid"
-
-+reset
+@import "partials/fast-grid/fast-grid"
+@import "partials/normalize.css"
 
 ::placeholder
   color: #666
@@ -16,10 +15,9 @@ html
 
 body
   font-size: 16px
-  font-weight: 400
   min-width: 320px
   position: relative
-  font-family: $default_font
+  font-family: $default-font
   overflow-x: hidden
   input, textarea
     border: #666 1px solid
@@ -29,10 +27,22 @@ body
     &:required:valid
       border-color: green
 
+.img-responsive
+  display: block
+  max-width: 100%
+  height: auto
+  &.img-width
+    width: 100%
+
+.text-center
+  text-align: center
+
 b, strong
-  font-weight: 700
+  font-weight: bold
 
 .container
-  +wrapper
+  @include grid-container(xs sm md lg xl)
+
+
 
 @import "media"

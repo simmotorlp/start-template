@@ -14,8 +14,7 @@ var gulp = require('gulp'),
     pngquant = require('imagemin-pngquant'),
     rimraf = require('rimraf'),
     notify = require("gulp-notify"),
-    rsync = require('gulp-rsync'),
-    group = require('gulp-group-css-media-queries');
+    rsync = require('gulp-rsync');
 
 var path = {
     build: { //Тут мы укажем куда складывать готовые после сборки файлы
@@ -49,7 +48,7 @@ var config = {
     tunnel: false,
     host: 'localhost',
     port: 9000,
-    logPrefix: "SymonovS"
+    logPrefix: "Frontend_Devil"
 };
 
 gulp.task('html', function () {
@@ -62,7 +61,6 @@ gulp.task('html', function () {
 gulp.task('styles', function () {
     return gulp.src(path.src.style)
         .pipe(sass({outputStyle: 'expand'}).on("error", notify.onError()))
-        .pipe(group())
         .pipe(rename('style.css'))
         .pipe(autoprefixer(['last 15 versions']))
         .pipe(cleancss({level: {0: {specialComments: 0}}})) // Opt., comment out when debugging
