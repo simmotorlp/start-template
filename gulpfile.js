@@ -7,7 +7,6 @@ var gulp = require( 'gulp' ),
 	concat = require( 'gulp-concat' ),
 	uglify = require( 'gulp-uglify' ),
 	cleancss = require( 'gulp-clean-css' ),
-    	sourcemaps = require('gulp-sourcemaps'),
 	rigger = require( 'gulp-rigger' ),
 	rename = require( 'gulp-rename' ),
 	autoprefixer = require( 'gulp-autoprefixer' ),
@@ -47,7 +46,7 @@ var config = {
 	tunnel : false,
 	host : 'localhost',
 	port : 9000,
-	logPrefix : "Symonov"
+	logPrefix : "Frontend_Devil"
 };
 
 gulp.task( 'html', function(done) {
@@ -60,9 +59,7 @@ gulp.task( 'html', function(done) {
 
 gulp.task( 'styles', function(done) {
 	return gulp.src( path.src.style )
-		.pipe( sourcemaps.init() )
 		.pipe( sass( { outputStyle : 'expand' } ).on( "error", notify.onError() ) )
-		.pipe( sourcemaps.write('.') )
 		.pipe( rename( 'style.css' ) )
 		.pipe( autoprefixer( [ 'last 15 versions' ] ) )
 		.pipe( cleancss( { level : { 0 : { specialComments : 0 } } } ) ) // Opt., comment out when debugging
