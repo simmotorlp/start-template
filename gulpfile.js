@@ -5,13 +5,15 @@ var gulp = require( 'gulp' ),
 	sass = require( 'gulp-sass' ),
 	browsersync = require( 'browser-sync' ),
 	concat = require( 'gulp-concat' ),
-	uglify = require( 'gulp-uglify' ),
+	uglify = require( 'gulp-uglify-es' ).default,
 	cleancss = require( 'gulp-clean-css' ),
 	rigger = require( 'gulp-rigger' ),
 	rename = require( 'gulp-rename' ),
 	autoprefixer = require( 'gulp-autoprefixer' ),
 	rimraf = require( 'rimraf' ),
 	notify = require( "gulp-notify" ),
+	imagemin = require( 'gulp-imagemin' ),
+	imageminMozjpeg = require( 'imagemin-mozjpeg' ),
 	rsync = require( 'gulp-rsync' );
 
 var path = {
@@ -24,8 +26,14 @@ var path = {
 	},
 	src : { //Пути откуда брать исходники
 		html : 'src/*.html', //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
-		js : 'src/js/scripts.js',//В стилях и скриптах нам понадобятся только main файлы
-		style : 'src/sass/main.sass',
+		js : {
+			vendor : 'src/js/vendor.js',
+			main : 'src/js/scripts.js'
+		},
+		style : {
+			vendor : 'src/sass/vendor.sass',
+			main : 'src/sass/main.sass'
+		},
 		img : 'src/img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
 		fonts : 'src/fonts/**/*.*'
 	},
@@ -49,48 +57,70 @@ var config = {
 	logPrefix : "Frontend_Devil"
 };
 
-gulp.task( 'html', function(done) {
-	gulp.src( path.src.html ) //Выберем файлы по нужному пути
+gulp.task( 'html', function( done ) {
+	return gulp.src( path.src.html ) //Выберем файлы по нужному пути
 		.pipe( rigger() ) //Прогоним через rigger
 		.pipe( gulp.dest( path.build.html ) ) //Выплюнем их в папку build
-		.pipe( browsersync.reload( { stream : true } ) ) //И перезагрузим наш сервер для обновлений
+		.pipe( browsersync.reload( { stream : true } ) ); //И перезагрузим наш сервер для обновлений
 	done();
 } );
 
-gulp.task( 'styles', function(done) {
-	return gulp.src( path.src.style )
-		.pipe( sass( { outputStyle : 'expand' } ).on( "error", notify.onError() ) )
-		.pipe( rename( 'style.css' ) )
-		.pipe( autoprefixer( [ 'last 15 versions' ] ) )
-		.pipe( cleancss( { level : { 0 : { specialComments : 0 } } } ) ) // Opt., comment out when debugging
+gulp.task( 'vendor_styles', function( done ) {
+	return gulp.src( path.src.style.vendor )
+		.pipe( sass( { outputStyle : 'nested' } ).on( "error", notify.onError() ) )
+		.pipe( rename( 'vendor.css' ) )
+		.pipe( cleancss( { level : { 2 : { specialComments : 0 } } } ) ) // Opt., comment out when debugging
 		.pipe( gulp.dest( path.build.css ) )
-		.pipe( browsersync.reload( { stream : true } ) )
+		.pipe( browsersync.reload( { stream : true } ) );
 	done();
 } );
 
-gulp.task( 'js', function(done) {
-	return gulp.src( path.src.js )
+gulp.task( 'main_styles', function( done ) {
+	return gulp.src( path.src.style.main )
+		.pipe( sass( { outputStyle : 'nested' } ).on( "error", notify.onError() ) )
+		.pipe( rename( 'style.css' ) )
+		.pipe( autoprefixer( [ '.browserslistrc' ] ) )
+		.pipe( cleancss( { level : { 2 : { specialComments : 0 } } } ) ) // Opt., comment out when debugging
+		.pipe( gulp.dest( path.build.css ) )
+		.pipe( browsersync.reload( { stream : true } ) );
+	done();
+} );
+
+gulp.task( 'vendor_js', function( done ) {
+	return gulp.src( path.src.js.vendor )
 		.pipe( rigger() ) //Прогоним через rigger
-		// .pipe(uglify()) // Mifify js (opt.)
+		.pipe( uglify() ) // Mifify js (opt.)
 		.pipe( gulp.dest( path.build.js ) )
-		.pipe( browsersync.reload( { stream : true } ) )
+		.pipe( browsersync.reload( { stream : true } ) );
 	done();
 } );
 
-gulp.task( 'image', function(done) {
-	gulp.src( path.src.img ) //Выберем наши картинки
+gulp.task( 'main_js', function( done ) {
+	return gulp.src( path.src.js.main )
+		.pipe( rigger() ) //Прогоним через rigger
+		// .pipe( uglify() ) // Mifify js (opt.)
+		.pipe( gulp.dest( path.build.js ) )
+		.pipe( browsersync.reload( { stream : true } ) );
+	done();
+} );
+
+gulp.task( 'image', function( done ) {
+	return gulp.src( path.src.img ) //Выберем наши картинки
+		.pipe( imagemin( [ imageminMozjpeg( {
+			quality : 80
+		} ) ] ) )
 		.pipe( gulp.dest( path.build.img ) ) //И бросим в build
-		.pipe( browsersync.reload( { stream : true } ) )
+		.pipe( browsersync.reload( { stream : true } ) );
 	done();
 } );
 
-gulp.task( 'fonts', function(done) {
-	gulp.src( path.src.fonts )
-		.pipe( gulp.dest( path.build.fonts ) )
+gulp.task( 'fonts', function( done ) {
+	return gulp.src( path.src.fonts )
+		.pipe( gulp.dest( path.build.fonts ) );
 	done();
 } );
 
-gulp.task( 'rsync', function(done) {
+gulp.task( 'rsync', function( done ) {
 	return gulp.src( 'src/**' )
 		.pipe( rsync( {
 			root : 'src/',
@@ -102,27 +132,27 @@ gulp.task( 'rsync', function(done) {
 			archive : true,
 			silent : false,
 			compress : true
-		} ) )
+		} ) );
 	done();
 } );
 
-gulp.task( 'build', gulp.series( 'html', 'js', 'styles', 'fonts', 'image' ));
+gulp.task( 'build', gulp.series( 'html', 'vendor_js', 'main_js', 'vendor_styles', 'main_styles', 'fonts', 'image' ) );
 
-gulp.task( 'watch', function(done) {
-	gulp.watch( [ path.watch.html ], gulp.parallel([ 'html' ] ));
-	gulp.watch( [ path.watch.js ], gulp.parallel([ 'js' ] ));
-	gulp.watch( [ path.watch.style ], gulp.parallel([ 'styles' ] ));
-	gulp.watch( [ path.watch.fonts ], gulp.parallel([ 'fonts' ] ));
-	gulp.watch( [ path.watch.img ], gulp.parallel([ 'image' ] ));
+gulp.task( 'watch', function( done ) {
+	gulp.watch( [ path.watch.html ], gulp.parallel( [ 'html' ] ) );
+	gulp.watch( [ path.watch.js ], gulp.parallel( [ 'vendor_js', 'main_js' ] ) );
+	gulp.watch( [ path.watch.style ], gulp.parallel( [ 'vendor_styles', 'main_styles' ] ) );
+	gulp.watch( [ path.watch.fonts ], gulp.parallel( [ 'fonts' ] ) );
+	gulp.watch( [ path.watch.img ], gulp.parallel( [ 'image' ] ) );
 	done();
 } );
 
-gulp.task( 'webserver', function(done) {
+gulp.task( 'webserver', function( done ) {
 	browsersync( config );
 	done();
 } );
 
-gulp.task( 'default', gulp.series( 'build', 'webserver', 'watch' ));
+gulp.task( 'default', gulp.series( 'build', 'webserver', 'watch' ) );
 
 gulp.task( 'clean', function( cb ) {
 	rimraf( path.clean, cb );
