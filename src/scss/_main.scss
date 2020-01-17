@@ -1,0 +1,41 @@
+@import '../../node_modules/fast-grid/fast-grid';
+
+$grid: (
+		breakpoints: (
+				xxs: 0px,
+				xs: 480px,
+				sm: 768px,
+				md: 992px,
+				lg: 1200px,
+				xl: 1390px
+		),
+		columns: 12,
+		gap: 15px,
+		container: 15px,
+		box-sizing: border-box,
+		mode: flex
+);
+
+::selection{
+	background-color: $accent;
+	color: #fff;
+}
+
+html {
+	font-size: 10px;
+}
+
+body {
+	min-width: 320px;
+	position: relative;
+	font-family: $default_font;
+	overflow-x: hidden;
+}
+
+b, strong {
+	font-weight: 700;
+}
+
+.container {
+	@include grid-container(xs sm md lg xl);
+}

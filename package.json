@@ -1,29 +1,51 @@
 {
-  "name": "start-template",
-  "version": "4.1.0",
-  "description": "OptimizedHTML - Start HTML Template",
-  "main": "index.js",
+  "name": "symonov-start-template",
+  "version": "0.0.2",
+  "description": "Starter kit for markup projects",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simmotorlp/start-template"
+  },
+  "keywords": [
+    "starter",
+    "markup",
+    "Symonov"
+  ],
+  "author": "Symonov Sergiy",
+  "license": "MIT",
+  "homepage": "https://github.com/simmotorlp/start-template",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Symonov",
-  "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.8.0",
+    "@babel/preset-env": "^7.8.0",
     "browser-sync": "^2.23.6",
-    "gulp": "^4.0.0",
+    "del": "^5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
     "gulp-autoprefixer": "^6.0.0",
+    "gulp-group-css-media-queries": "^1.2.2",
     "gulp-clean-css": "^4.0.0",
+    "gulp-sourcemaps": "^2.6.5",
     "gulp-concat": "^2.6.1",
     "gulp-notify": "^3.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-rigger": "^0.5.8",
-    "gulp-rsync": "0.0.8",
-    "gulp-sass": "^4.0.0",
-    "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8",
-    "rimraf": "^2.6.2"
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify-es": "^1.0.4",
+    "gulp-imagemin": "^6.1.0",
+    "imagemin-mozjpeg": "^8.0.0",
+    "rimraf": "^2.6.2",
+    "sass": "^1.24.4",
+    "fast-grid": "^0.2.5"
   },
   "dependencies": {
-    "bower": "^1.8.4"
+    "include-media": "^1.4.9",
+    "jquery": "^3.4.1",
+    "normalize.css": "^8.0.1"
   }
 }
